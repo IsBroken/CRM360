@@ -1,0 +1,38 @@
+# Python backend
+backend/venv/
+__pycache__/
+*.pyc
+backend/.env
+backend/**/.env
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/**/.env
+
+# OS / editor junk
+.DS_Store
+.vscode/
+*.swp
+*.swo
+*.tmp
+*.bak
+*.orig
+*.rej
+
+# Common IDE temporary files
+.idea/
+*.iml
+
+# Security: never commit credentials
+# Keep all secrets and environment variables out of git
+.env
+**/.env
+*.env
+.env.*
+
+# Optional: avoid committing local auth or secret files
+jwt_secret*
+secret*
+credentials*
