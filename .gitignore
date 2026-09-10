@@ -1,3 +1,6 @@
+#Migrations
+migration/
+
 # Python backend
 backend/venv/
 __pycache__/
