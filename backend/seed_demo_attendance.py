@@ -16,23 +16,24 @@ DEMO_EMPLOYEES = [
     {"name": "Ayesha Khan", "email": "ayesha.khan@crm360.com"},
     {"name": "Bilal Ahmed", "email": "bilal.ahmed@crm360.com"},
     {"name": "Sarah Ali", "email": "sarah.ali@crm360.com"},
+    {"name": "Test User", "email": "test.user@crm360.com"},
 ]
 
 LOCATIONS = [
     {
-        "lat": 31.5204,
-        "lng": 74.3587,
-        "address": "Gurumangat Road, Rehman Park, Gulberg, Lahore Cant, Lahore Cantonment Tehsil, Lahore District, Lahore Division, Punjab, 54660, Pakistan",
+        "lat": 19.2189,
+        "lng": 73.1057,
+        "address": "Thakurli, Maharashtra, India",
     },
     {
-        "lat": 31.4783,
-        "lng": 74.2915,
-        "address": "Johar Town, Lahore, Punjab, Pakistan",
+        "lat": 19.2168,
+        "lng": 73.0865,
+        "address": "Dombivli, Maharashtra, India",
     },
     {
-        "lat": 31.5050,
-        "lng": 74.3202,
-        "address": "Model Town, Lahore, Punjab, Pakistan",
+        "lat": 19.2507,
+        "lng": 73.1305,
+        "address": "Kalyan, Maharashtra, India",
     },
 ]
 
@@ -82,7 +83,8 @@ def build_attendance_payloads():
             if check_out_dt <= check_in_dt:
                 check_out_dt = check_in_dt + timedelta(hours=8, minutes=30)
 
-            location = LOCATIONS[(employee_number + index) % len(LOCATIONS)]
+            location_index = (employee_number + index) % len(LOCATIONS)
+            location = LOCATIONS[location_index]
             duration = check_out_dt - check_in_dt
             working_hours = f"{duration.total_seconds() / 3600:.2f} hours"
 
@@ -90,6 +92,7 @@ def build_attendance_payloads():
                 {
                     "date": target_date,
                     "employee_order": employee_number,
+                    "location_index": location_index,
                     "check_in_time": check_in_dt,
                     "check_out_time": check_out_dt,
                     "check_in_lat": location["lat"],
@@ -127,9 +130,12 @@ def seed_demo_data():
 
         records = build_attendance_payloads()
         created_count = 0
-        skipped_count = 0
+        updated_count = 0
 
         for item in records:
+            if item["date"] == date.today():
+                continue
+
             employee = employees_by_email[DEMO_EMPLOYEES[item["employee_order"]]["email"]]
             existing = (
                 db.query(Attendance)
@@ -139,7 +145,14 @@ def seed_demo_data():
             )
 
             if existing is not None:
-                skipped_count += 1
+                location = LOCATIONS[item["location_index"]]
+                existing.check_in_lat = location["lat"]
+                existing.check_in_lng = location["lng"]
+                existing.check_in_address = location["address"]
+                existing.check_out_lat = location["lat"] + 0.0008
+                existing.check_out_lng = location["lng"] + 0.0006
+                existing.check_out_address = location["address"]
+                updated_count += 1
                 continue
 
             attendance = Attendance(
@@ -161,8 +174,7 @@ def seed_demo_data():
 
         db.commit()
 
-        print(f"Seed complete: created {created_count} attendance records, skipped {skipped_count} duplicates.")
-        print(f"Demo login password: {DEMO_PASSWORD}")
+        print(f"Seed complete: updated {updated_count} historical demo records, created {created_count} missing records.")
 
 
 if __name__ == "__main__":
