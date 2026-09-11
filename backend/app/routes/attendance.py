@@ -13,6 +13,16 @@ from ..database import get_db
 router = APIRouter(prefix="/api/attendance", tags=["Attendance"])
 
 
+def ensure_utc(value):
+    if value is None:
+        return None
+
+    if value.tzinfo is None:
+        return value.replace(tzinfo=timezone.utc)
+
+    return value.astimezone(timezone.utc)
+
+
 def reverse_geocode(lat: float, lng: float) -> str:
     url = (
         "https://nominatim.openstreetmap.org/reverse?format=jsonv2"
@@ -108,7 +118,8 @@ def check_out(
     check_out_time = datetime.now(timezone.utc)
     check_out_address = reverse_geocode(payload.lat, payload.lng)
 
-    duration = check_out_time - attendance_record.check_in_time
+    normalized_check_in_time = ensure_utc(attendance_record.check_in_time)
+    duration = check_out_time - normalized_check_in_time
     hours = duration.total_seconds() / 3600
     working_hours = f"{hours:.2f} hours"
 
