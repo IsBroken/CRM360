@@ -76,6 +76,14 @@ export default function ManagerAttendance() {
     window.location.href = '/attendance'
   }
 
+  function handleOpenCompanyMaster() {
+    window.location.href = '/company-master'
+  }
+
+  function handleOpenEmployeeMaster() {
+    window.location.href = '/employee-master'
+  }
+
   return (
     <main style={styles.page}>
       <section style={styles.card}>
@@ -102,6 +110,12 @@ export default function ManagerAttendance() {
           />
           <button type="button" onClick={handleOpenEmployeeAttendance} style={styles.secondaryButton}>
             My Attendance
+          </button>
+          <button type="button" onClick={handleOpenCompanyMaster} style={styles.secondaryButton}>
+            Company Master
+          </button>
+          <button type="button" onClick={handleOpenEmployeeMaster} style={styles.secondaryButton}>
+            Employee Master
           </button>
         </div>
 

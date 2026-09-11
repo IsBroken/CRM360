@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import Attendance from './pages/Attendance'
 import CompanyMaster from './pages/CompanyMaster'
+import EmployeeMaster from './pages/EmployeeMaster'
 import Login from './pages/Login'
 import ManagerAttendance from './pages/ManagerAttendance'
 
@@ -10,7 +11,7 @@ function App() {
     const token = localStorage.getItem('token')
 
     if (
-      (currentPath === '/attendance' || currentPath === '/manager' || currentPath === '/manager-attendance' || currentPath === '/company-master') &&
+      (currentPath === '/attendance' || currentPath === '/manager' || currentPath === '/manager-attendance' || currentPath === '/company-master' || currentPath === '/employee-master') &&
       !token
     ) {
       window.location.replace('/login')
@@ -38,6 +39,10 @@ function App() {
 
   if (currentPath === '/company-master') {
     return <CompanyMaster />
+  }
+
+  if (currentPath === '/employee-master') {
+    return <EmployeeMaster />
   }
 
   return <Login />
