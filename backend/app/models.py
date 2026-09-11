@@ -6,6 +6,20 @@ from sqlalchemy.orm import relationship
 from .database import Base
 
 
+class Company(Base):
+    __tablename__ = "companies"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(150), nullable=False)
+    address = Column(String(255), nullable=False)
+    latitude = Column(Float, nullable=False)
+    longitude = Column(Float, nullable=False)
+    allowed_radius = Column(Float, nullable=False, default=100.0)
+    is_active = Column(Boolean, nullable=False, default=True)
+
+    employees = relationship("Employee", back_populates="company")
+
+
 class Employee(Base):
     __tablename__ = "employees"
 
@@ -14,7 +28,10 @@ class Employee(Base):
     email = Column(String(120), unique=True, index=True, nullable=False)
     password_hash = Column(String(255), nullable=False)
     is_active = Column(Boolean, default=True, nullable=False)
+    role = Column(String(30), nullable=False, default="employee")
+    company_id = Column(Integer, ForeignKey("companies.id"), nullable=True)
 
+    company = relationship("Company", back_populates="employees")
     attendances = relationship("Attendance", back_populates="employee")
 
 

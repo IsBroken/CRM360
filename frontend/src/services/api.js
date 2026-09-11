@@ -84,3 +84,73 @@ export function checkOutApi({ lat, lng }) {
     auth: true,
   })
 }
+
+export function getCompanies() {
+  return request({
+    endpoint: '/api/companies',
+    method: 'GET',
+    auth: true,
+  })
+}
+
+export function createCompany(data) {
+  return request({
+    endpoint: '/api/companies',
+    method: 'POST',
+    body: data,
+    auth: true,
+  })
+}
+
+export function updateCompany(id, data) {
+  return request({
+    endpoint: `/api/companies/${id}`,
+    method: 'PUT',
+    body: data,
+    auth: true,
+  })
+}
+
+export function updateCompanyStatus(id, is_active) {
+  return request({
+    endpoint: `/api/companies/${id}/status`,
+    method: 'PATCH',
+    body: { is_active },
+    auth: true,
+  })
+}
+
+export function getEmployees() {
+  return request({
+    endpoint: '/api/employees',
+    method: 'GET',
+    auth: true,
+  })
+}
+
+export function createEmployee(data) {
+  return request({
+    endpoint: '/api/employees',
+    method: 'POST',
+    body: data,
+    auth: true,
+  })
+}
+
+export function updateEmployee(id, data) {
+  return request({
+    endpoint: `/api/employees/${id}`,
+    method: 'PUT',
+    body: data,
+    auth: true,
+  })
+}
+
+export function updateEmployeeStatus(id, is_active) {
+  return request({
+    endpoint: `/api/employees/${id}/status`,
+    method: 'PATCH',
+    body: { is_active },
+    auth: true,
+  })
+}

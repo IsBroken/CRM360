@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .routes.attendance import router as attendance_router
 from .routes.auth import router as auth_router
+from .routes.company import router as company_router
+from .routes.employee import router as employee_router
 from .database import Base, engine
 from . import models
 
@@ -34,6 +36,8 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(attendance_router)
+app.include_router(company_router)
+app.include_router(employee_router)
 
 
 @app.get("/")

@@ -90,3 +90,15 @@ def get_current_employee(
         )
 
     return employee
+
+
+def require_admin(
+    current_employee: models.Employee = Depends(get_current_employee),
+) -> models.Employee:
+    if current_employee.role == "admin":
+        return current_employee
+
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail="Admin access required",
+    )

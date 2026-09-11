@@ -14,6 +14,7 @@ from ..database import get_db
 
 router = APIRouter(prefix="/api/attendance", tags=["Attendance"])
 logger = logging.getLogger(__name__)
+EARTH_RADIUS_METERS = 6371000.0
 
 
 def ensure_utc(value):
@@ -109,6 +110,51 @@ def check_in(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Attendance already recorded for today",
+        )
+
+    if current_employee.company_id is None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Employee is not assigned to a company",
+        )
+
+    company = (
+        db.query(models.Company)
+        .filter(models.Company.id == current_employee.company_id)
+        .first()
+    )
+    if company is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Assigned company not found",
+        )
+
+    if not company.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Assigned company is inactive",
+        )
+
+    lat1 = math.radians(payload.lat)
+    lng1 = math.radians(payload.lng)
+    lat2 = math.radians(company.latitude)
+    lng2 = math.radians(company.longitude)
+
+    dlat = lat2 - lat1
+    dlng = lng2 - lng1
+    a = (
+        math.sin(dlat / 2) ** 2
+        + math.cos(lat1) * math.cos(lat2) * math.sin(dlng / 2) ** 2
+    )
+    distance = 2 * EARTH_RADIUS_METERS * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
+    if distance > company.allowed_radius:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=(
+                f"Employee is outside the allowed company radius. "
+                f"Distance: {distance:.2f}m exceeds allowed radius: {company.allowed_radius}m"
+            ),
         )
 
     address = reverse_geocode(payload.lat, payload.lng)
