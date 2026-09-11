@@ -1,5 +1,5 @@
 import json
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from typing import Any
 from urllib import request, error
 
@@ -64,7 +64,7 @@ def check_in(
     attendance_record = models.Attendance(
         employee_id=current_employee.id,
         date=today,
-        check_in_time=datetime.now(),
+        check_in_time=datetime.now(timezone.utc),
         check_in_lat=payload.lat,
         check_in_lng=payload.lng,
         check_in_address=address,
@@ -105,7 +105,7 @@ def check_out(
             detail="Attendance already checked out for today",
         )
 
-    check_out_time = datetime.now()
+    check_out_time = datetime.now(timezone.utc)
     check_out_address = reverse_geocode(payload.lat, payload.lng)
 
     duration = check_out_time - attendance_record.check_in_time

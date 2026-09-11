@@ -1,19 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { getManagerAttendance } from '../services/api'
+import { formatAttendanceDateTime } from '../utils/attendanceDate'
 
 function formatDate(dateValue) {
-  if (!dateValue) return '—'
-
-  const parsed = new Date(dateValue)
-  if (Number.isNaN(parsed.getTime())) {
-    return dateValue
-  }
-
-  return new Intl.DateTimeFormat('en-US', {
-    timeZone: 'Asia/Kolkata',
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  }).format(parsed)
+  return formatAttendanceDateTime(dateValue)
 }
 
 function getTodayDateString() {

@@ -2,20 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { checkInApi, checkOutApi, getAttendanceMe } from '../services/api'
+import { formatAttendanceDateTime } from '../utils/attendanceDate'
 
 function formatDateTime(value) {
-  if (!value) return '—'
-
-  const date = new Date(value)
-  if (Number.isNaN(date.getTime())) {
-    return value
-  }
-
-  return new Intl.DateTimeFormat('en-US', {
-    timeZone: 'Asia/Kolkata',
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  }).format(date)
+  return formatAttendanceDateTime(value)
 }
 
 function getLocalDateString(date = new Date()) {
