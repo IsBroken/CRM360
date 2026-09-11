@@ -12,6 +12,7 @@ function formatDateTime(value) {
   }
 
   return new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Kolkata',
     dateStyle: 'medium',
     timeStyle: 'short',
   }).format(date)

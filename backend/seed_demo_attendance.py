@@ -16,7 +16,6 @@ DEMO_EMPLOYEES = [
     {"name": "Ayesha Khan", "email": "ayesha.khan@crm360.com"},
     {"name": "Bilal Ahmed", "email": "bilal.ahmed@crm360.com"},
     {"name": "Sarah Ali", "email": "sarah.ali@crm360.com"},
-    {"name": "Test User", "email": "test.user@crm360.com"},
 ]
 
 LOCATIONS = [
