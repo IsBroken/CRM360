@@ -1,4 +1,6 @@
 import json
+import logging
+import math
 from datetime import date, datetime, timezone
 from typing import Any
 from urllib import request, error
@@ -11,6 +13,7 @@ from ..auth import get_current_employee
 from ..database import get_db
 
 router = APIRouter(prefix="/api/attendance", tags=["Attendance"])
+logger = logging.getLogger(__name__)
 
 
 def ensure_utc(value):
@@ -24,24 +27,63 @@ def ensure_utc(value):
 
 
 def reverse_geocode(lat: float, lng: float) -> str:
+    try:
+        lat_value = float(lat)
+        lng_value = float(lng)
+    except (TypeError, ValueError):
+        logger.warning("[reverse_geocode] invalid coordinates lat=%r lng=%r", lat, lng)
+        return "Address not available"
+
+    if not math.isfinite(lat_value) or not math.isfinite(lng_value):
+        logger.warning("[reverse_geocode] non-finite coordinates lat=%r lng=%r", lat, lng)
+        return "Address not available"
+
     url = (
-        "https://nominatim.openstreetmap.org/reverse?format=jsonv2"
-        f"&lat={lat}&lon={lng}"
+        "https://nominatim.openstreetmap.org/reverse?"
+        f"lat={lat_value:.6f}&lon={lng_value:.6f}&format=jsonv2&zoom=18&addressdetails=1"
     )
 
     req = request.Request(
         url,
         headers={
-            "User-Agent": "CRM360-College-Project/1.0",
+            "User-Agent": "CRM360-College-Project/1.0 (contact: support@crm360.example)",
+            "Accept": "application/json",
             "Accept-Language": "en",
+            "Referer": "https://crm360-ogo1.onrender.com/",
         },
     )
 
+    logger.info("[reverse_geocode] attempt lat=%.6f lon=%.6f", lat_value, lng_value)
+
     try:
-        with request.urlopen(req, timeout=10) as response:
-            payload = json.loads(response.read().decode("utf-8"))
-            return payload.get("display_name") or "Address not available"
-    except (error.URLError, ValueError, json.JSONDecodeError):
+        with request.urlopen(req, timeout=12) as response:
+            status_code = getattr(response, "status", None) or response.getcode()
+            body = response.read().decode("utf-8", errors="replace")
+            logger.info("[reverse_geocode] status=%s", status_code)
+
+            try:
+                payload = json.loads(body)
+            except json.JSONDecodeError as exc:
+                logger.warning("[reverse_geocode] invalid json payload: %s", exc)
+                return "Address not available"
+
+            display_name = payload.get("display_name")
+            if display_name:
+                logger.info("[reverse_geocode] success display_name=%s", display_name[:140])
+                return display_name
+
+            logger.warning("[reverse_geocode] response missing display_name payload=%s", payload)
+            return "Address not available"
+    except error.HTTPError as exc:
+        logger.warning(
+            "[reverse_geocode] HTTPError status=%s reason=%s url=%s",
+            exc.code,
+            exc.reason,
+            url,
+        )
+        return "Address not available"
+    except (error.URLError, ValueError, TypeError, OSError) as exc:
+        logger.warning("[reverse_geocode] request failed type=%s message=%s", type(exc).__name__, exc)
         return "Address not available"
 
 
