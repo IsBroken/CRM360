@@ -46,10 +46,9 @@ def reverse_geocode(lat: float, lng: float) -> str:
     req = request.Request(
         url,
         headers={
-            "User-Agent": "CRM360-College-Project/1.0 (contact: support@crm360.example)",
+            "User-Agent": "CRM360/1.0 (https://crm360.example; support@crm360.com)",
             "Accept": "application/json",
-            "Accept-Language": "en",
-            "Referer": "https://crm360-ogo1.onrender.com/",
+            "Accept-Language": "en-IN,en;q=0.9",
         },
     )
 
