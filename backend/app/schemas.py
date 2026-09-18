@@ -141,3 +141,29 @@ class EmployeeResponse(BaseModel):
     is_active: bool
 
     model_config = ConfigDict(from_attributes=True)
+
+class VisitCreate(BaseModel):
+    client_name: str = Field(..., min_length=1)
+    purpose: str = Field(..., min_length=1)
+    visit_date: date
+    visit_time: datetime
+    latitude: float = Field(..., ge=-90, le=90)
+    longitude: float = Field(..., ge=-180, le=180)
+    notes: Optional[str] = None
+
+
+class VisitResponse(BaseModel):
+    id: int
+    employee_id: int
+    client_name: str
+    purpose: str
+    visit_date: date
+    visit_time: datetime
+    latitude: float
+    longitude: float
+    address: str
+    notes: Optional[str] = None
+    status: str
+    created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)

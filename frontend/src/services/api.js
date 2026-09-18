@@ -154,3 +154,20 @@ export function updateEmployeeStatus(id, is_active) {
     auth: true,
   })
 }
+
+export function createVisit(data) {
+  return request({
+    endpoint: '/api/visits',
+    method: 'POST',
+    body: data,
+    auth: true,
+  })
+}
+
+export function getMyVisits() {
+  return request({
+    endpoint: '/api/visits/me',
+    method: 'GET',
+    auth: true,
+  })
+}

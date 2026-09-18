@@ -33,7 +33,7 @@ class Employee(Base):
 
     company = relationship("Company", back_populates="employees")
     attendances = relationship("Attendance", back_populates="employee")
-
+    visits = relationship("Visit", back_populates="employee")
 
 class Attendance(Base):
     __tablename__ = "attendance"
@@ -56,3 +56,26 @@ class Attendance(Base):
     status = Column(String(50), nullable=False, default="checked_in")
 
     employee = relationship("Employee", back_populates="attendances")
+
+class Visit(Base):
+    __tablename__ = "visits"
+
+    id = Column(Integer, primary_key=True, index=True)
+    employee_id = Column(Integer, ForeignKey("employees.id"), nullable=False)
+
+    client_name = Column(String(150), nullable=False)
+    purpose = Column(String(255), nullable=False)
+
+    visit_date = Column(Date, nullable=False)
+    visit_time = Column(DateTime, nullable=False)
+
+    latitude = Column(Float, nullable=False)
+    longitude = Column(Float, nullable=False)
+    address = Column(String(255), nullable=False)
+
+    notes = Column(String(500), nullable=True)
+    status = Column(String(30), nullable=False, default="completed")
+
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+    employee = relationship("Employee", back_populates="visits")

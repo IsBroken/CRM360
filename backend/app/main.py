@@ -7,6 +7,7 @@ from .routes.company import router as company_router
 from .routes.employee import router as employee_router
 from .database import Base, engine
 from . import models
+from .routes.visit import router as visit_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -38,7 +39,7 @@ app.include_router(auth_router)
 app.include_router(attendance_router)
 app.include_router(company_router)
 app.include_router(employee_router)
-
+app.include_router(visit_router)
 
 @app.get("/")
 def root():
