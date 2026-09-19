@@ -113,16 +113,29 @@ export default function Visits() {
 
   return (
     <div style={styles.page}>
-      <div style={styles.header}>
-        <div>
-          <h1 style={styles.title}>Visits</h1>
-          <p style={styles.subtitle}>
-            Record client visits and view your visit history.
-          </p>
-        </div>
-      </div>
 
       <div style={styles.card}>
+
+      <div style={styles.headerRow}>
+        <div>
+            <p style={styles.eyebrow}>CRM360</p>
+                <h1 style={styles.title}>Visits</h1>
+                <p style={styles.subtitle}>
+                Record client visits and view your visit history.
+                </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => {
+          window.location.href = '/attendance'
+        }}
+          style={styles.backButton}
+        >
+          ← Back to Attendance
+        </button>
+    </div>
+
         <h2 style={styles.cardTitle}>Create Visit</h2>
 
         <form onSubmit={handleSubmit}>
@@ -283,13 +296,44 @@ export default function Visits() {
 
 const styles = {
   page: {
+    minHeight: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
     padding: '24px',
-    maxWidth: '1100px',
-    margin: '0 auto',
+    background: 'linear-gradient(135deg, #f8fafc 0%, #edf4ff 45%, #e2e8f0 100%)',
+    fontFamily: 'Segoe UI, sans-serif',
   },
 
-  header: {
-    marginBottom: '24px',
+  headerRow: {
+    width: '100%',
+    maxWidth: '1180px',
+    margin: '0 auto 24px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: '12px',
+    paddingBottom: '18px',
+    borderBottom: '1px solid #e2e8f0',
+  },
+
+  eyebrow: {
+    margin: '0 0 6px',
+    fontSize: '0.7rem',
+    fontWeight: 700,
+    letterSpacing: '0.12em',
+    textTransform: 'uppercase',
+    color: '#64748b',
+  },
+
+  backButton: {
+    border: '1px solid #cbd5e1',
+    background: '#f8fafc',
+    color: '#334155',
+    borderRadius: '12px',
+    padding: '10px 14px',
+    fontWeight: 700,
+    cursor: 'pointer',
   },
 
   title: {
@@ -305,11 +349,15 @@ const styles = {
   },
 
   card: {
+    width: '100%',
+    maxWidth: '1180px',
+    boxSizing: 'border-box',
+    margin: '0 auto 24px',
     background: '#ffffff',
-    borderRadius: '16px',
-    padding: '24px',
-    marginBottom: '24px',
-    boxShadow: '0 8px 24px rgba(15, 23, 42, 0.08)',
+    borderRadius: '24px',
+    padding: '28px',
+    border: '1px solid #e2e8f0',
+    boxShadow: '0 20px 50px rgba(15, 23, 42, 0.12)',
   },
 
   cardTitle: {
