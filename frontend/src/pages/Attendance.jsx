@@ -119,6 +119,10 @@ export default function Attendance() {
     window.location.href = '/manager-attendance'
   }
 
+  function handleOpenVisits() {
+    window.location.href = '/visits'
+  }
+
   const todayRecord = attendanceData?.attendance?.find((record) => {
     const today = getLocalDateString()
     return record.date === today
@@ -300,6 +304,12 @@ export default function Attendance() {
         </div>
 
         <div style={styles.actionRow}>
+          {hasCheckedIn ? (
+            <button type="button" onClick={handleOpenVisits} style={styles.secondaryButton}>
+              Record Visit
+            </button>
+          ) : null}
+
           <button type="button" onClick={handleOpenManagerAttendance} style={styles.secondaryButton}>
             Manager Attendance
           </button>

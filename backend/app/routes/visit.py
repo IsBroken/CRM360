@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends, status
+from datetime import date
+from fastapi import APIRouter, Depends, HTTPException, status
+
 from sqlalchemy.orm import Session
 
 from .. import models, schemas
@@ -23,6 +25,20 @@ def create_visit(
     db: Session = Depends(get_db),
     current_employee: models.Employee = Depends(get_current_employee),
 ):
+
+    attendance = (
+        db.query(models.Attendance)
+        .filter(models.Attendance.employee_id == current_employee.id)
+        .filter(models.Attendance.date == date.today())
+        .first()
+    )
+
+    if attendance is None or attendance.status != "checked_in":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="You must be checked in to record a visit",
+        )
+
     address = reverse_geocode(
         payload.latitude,
         payload.longitude,
