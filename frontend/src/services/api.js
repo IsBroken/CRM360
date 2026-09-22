@@ -1,4 +1,4 @@
-export const API_BASE_URL = https://crm360-ogo1.onrender.com
+export const API_BASE_URL = 'https://crm360-ogo1.onrender.com'
 function getAuthToken() {
   return localStorage.getItem('token')
 }
