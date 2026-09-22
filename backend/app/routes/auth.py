@@ -5,7 +5,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
 from .. import models, schemas
-from ..auth import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token, verify_password
+from ..auth import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token, get_current_employee, verify_password
 from ..database import get_db
 
 router = APIRouter(prefix="/api/auth", tags=["Authentication"])
@@ -50,3 +50,9 @@ def login_for_access_token(
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token({"sub": str(employee.id)}, access_token_expires)
     return {"access_token": access_token, "token_type": "bearer"}
+
+@router.get("/me", response_model=schemas.EmployeeResponse)
+def get_me(
+    current_employee: models.Employee = Depends(get_current_employee),
+):
+    return current_employee

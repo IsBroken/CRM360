@@ -67,10 +67,6 @@ export default function EmployeeMaster() {
     window.location.href = '/login'
   }
 
-  function handleBackToManager() {
-    window.location.href = '/manager'
-  }
-
   async function handleSubmit(event) {
     event.preventDefault()
 
@@ -165,9 +161,6 @@ export default function EmployeeMaster() {
           </div>
 
           <div style={styles.headerActions}>
-            <button type="button" onClick={handleBackToManager} style={styles.secondaryButton}>
-              Back to Manager Attendance
-            </button>
             <button type="button" onClick={handleLogout} style={styles.logoutButton}>
               Logout
             </button>
@@ -244,6 +237,7 @@ export default function EmployeeMaster() {
               <span style={styles.label}>Role</span>
               <select name="role" value={form.role} onChange={handleChange} style={styles.input}>
                 <option value="employee">Employee</option>
+                <option value="manager">Manager</option>
                 <option value="admin">Admin</option>
               </select>
             </label>
@@ -392,15 +386,6 @@ const styles = {
     background: '#f8fafc',
     color: '#334155',
     borderRadius: '12px',
-    padding: '10px 14px',
-    fontWeight: 700,
-    cursor: 'pointer',
-  },
-  secondaryButton: {
-    border: '1px solid #cbd5e1',
-    background: '#eff6ff',
-    color: '#1d4ed8',
-    borderRadius: '10px',
     padding: '10px 14px',
     fontWeight: 700,
     cursor: 'pointer',

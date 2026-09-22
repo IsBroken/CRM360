@@ -124,16 +124,6 @@ export default function Visits() {
                 Record client visits and view your visit history.
                 </p>
         </div>
-
-        <button
-          type="button"
-          onClick={() => {
-          window.location.href = '/attendance'
-        }}
-          style={styles.backButton}
-        >
-          ← Back to Attendance
-        </button>
     </div>
 
         <h2 style={styles.cardTitle}>Create Visit</h2>

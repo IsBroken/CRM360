@@ -9,7 +9,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
 from .. import models, schemas
-from ..auth import get_current_employee,require_admin
+from ..auth import get_current_employee, require_manager_or_admin, require_admin
 from ..database import get_db
 
 router = APIRouter(prefix="/api/attendance", tags=["Attendance"])
@@ -247,7 +247,7 @@ def get_my_attendance(
 def get_all_attendance_for_date(
     date_value: str = Query(..., alias="date"),
     db: Session = Depends(get_db),
-    current_employee: models.Employee = Depends(require_admin),
+    current_employee: models.Employee = Depends(require_manager_or_admin),
 ):
     try:
         target_date = date.fromisoformat(date_value)

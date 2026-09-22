@@ -63,10 +63,6 @@ export default function CompanyMaster() {
     window.location.href = '/login'
   }
 
-  function handleBackToManager() {
-    window.location.href = '/manager'
-  }
-
   async function handleSubmit(event) {
     event.preventDefault()
 
@@ -150,9 +146,6 @@ export default function CompanyMaster() {
           </div>
 
           <div style={styles.headerActions}>
-            <button type="button" onClick={handleBackToManager} style={styles.secondaryButton}>
-              Back to Manager Attendance
-            </button>
             <button type="button" onClick={handleLogout} style={styles.logoutButton}>
               Logout
             </button>
@@ -380,15 +373,6 @@ const styles = {
     background: '#f8fafc',
     color: '#334155',
     borderRadius: '12px',
-    padding: '10px 14px',
-    fontWeight: 700,
-    cursor: 'pointer',
-  },
-  secondaryButton: {
-    border: '1px solid #cbd5e1',
-    background: '#eff6ff',
-    color: '#1d4ed8',
-    borderRadius: '10px',
     padding: '10px 14px',
     fontWeight: 700,
     cursor: 'pointer',

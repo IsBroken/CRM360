@@ -102,3 +102,14 @@ def require_admin(
         status_code=status.HTTP_403_FORBIDDEN,
         detail="Admin access required",
     )
+
+def require_manager_or_admin(
+    current_employee: models.Employee = Depends(get_current_employee),
+) -> models.Employee:
+    if current_employee.role in ("manager", "admin"):
+        return current_employee
+
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail="Manager or admin access required",
+    )

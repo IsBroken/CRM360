@@ -72,18 +72,6 @@ export default function ManagerAttendance() {
     window.location.href = '/login'
   }
 
-  function handleOpenEmployeeAttendance() {
-    window.location.href = '/attendance'
-  }
-
-  function handleOpenCompanyMaster() {
-    window.location.href = '/company-master'
-  }
-
-  function handleOpenEmployeeMaster() {
-    window.location.href = '/employee-master'
-  }
-
   return (
     <main style={styles.page}>
       <section style={styles.card}>
@@ -108,15 +96,6 @@ export default function ManagerAttendance() {
             onChange={(event) => setSelectedDate(event.target.value)}
             style={styles.dateInput}
           />
-          <button type="button" onClick={handleOpenEmployeeAttendance} style={styles.secondaryButton}>
-            My Attendance
-          </button>
-          <button type="button" onClick={handleOpenCompanyMaster} style={styles.secondaryButton}>
-            Company Master
-          </button>
-          <button type="button" onClick={handleOpenEmployeeMaster} style={styles.secondaryButton}>
-            Employee Master
-          </button>
         </div>
 
         <div style={styles.summaryGrid}>
@@ -232,15 +211,6 @@ const styles = {
   fieldLabel: {
     color: '#334155',
     fontWeight: 700,
-  },
-  secondaryButton: {
-    border: '1px solid #cbd5e1',
-    background: '#eff6ff',
-    color: '#1d4ed8',
-    borderRadius: '10px',
-    padding: '10px 14px',
-    fontWeight: 700,
-    cursor: 'pointer',
   },
   dateInput: {
     padding: '10px 12px',

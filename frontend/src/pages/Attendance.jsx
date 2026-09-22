@@ -115,10 +115,6 @@ export default function Attendance() {
     window.location.href = '/login'
   }
 
-  function handleOpenManagerAttendance() {
-    window.location.href = '/manager-attendance'
-  }
-
   function handleOpenVisits() {
     window.location.href = '/visits'
   }
@@ -309,10 +305,6 @@ export default function Attendance() {
               Record Visit
             </button>
           ) : null}
-
-          <button type="button" onClick={handleOpenManagerAttendance} style={styles.secondaryButton}>
-            Manager Attendance
-          </button>
         </div>
 
         {!todayRecord ? (

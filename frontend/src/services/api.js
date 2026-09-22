@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'https://crm360-ogo1.onrender.com'
+export const API_BASE_URL = 'http://127.0.0.1:8000'
 function getAuthToken() {
   return localStorage.getItem('token')
 }
@@ -170,4 +170,20 @@ export function getMyVisits() {
     method: 'GET',
     auth: true,
   })
+}
+
+export async function getCurrentUser() {
+  const token = localStorage.getItem('token')
+
+  const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch current user')
+  }
+
+  return response.json()
 }
